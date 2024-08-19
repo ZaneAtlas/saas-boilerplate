@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import supabaseBrowser from "@/lib/supabase/browser";
+import { useSearchParams } from "next/navigation";
 
 interface AuthFormProps {
 
@@ -21,24 +22,27 @@ interface AuthFormProps {
 
 export function AuthForm(props: AuthFormProps) {
 
+    const params = useSearchParams()
+    const next = params.get("next")
+
     const handleLogin = ( provider: "google" | "github" ) => {
 
         const supabase = supabaseBrowser()
         supabase.auth.signInWithOAuth({
             provider,
             options: {
-                redirectTo: location.origin + '/auth/callback'
+                redirectTo: location.origin + '/auth/callback?next=' + next
             }
         })
 
     }
 
     return (
-        <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-zinc-100 dark:bg-zinc-950">
+        <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-zinc-50 dark:bg-zinc-900 drop-shadow-lg">
 
             <div className="flex w-full">
                 <IconKey />
-                <h2 className="font-bold ml-5 text-xl text-neutral-800 dark:text-neutral-200">
+                <h2 className="font-bold ml-5 text-xl">
                     Next.js + Supabase
                 </h2>
             </div>
@@ -92,7 +96,7 @@ export function AuthForm(props: AuthFormProps) {
                     <p>{props.type == 'signin' ? "Sign In" : "Sign up"} with</p>
                 </div>
 
-                <div className="flex flex-col space-y-4">
+                <div className={props.type == "signin" ? "flex flex-col space-y-4" : "flex items-center space-x-4"}>
                     <button
                         className=" relative group/btn flex space-x-2 items-center justify-center px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
                         onClick={() => handleLogin("github")}
@@ -115,17 +119,17 @@ export function AuthForm(props: AuthFormProps) {
                         <BottomGradient />
                     </button>
                 </div>
-                <div className="flex justify-center items-center mt-10 text-xs">
+                <div className="flex justify-center items-center mt-5 text-xs">
                     {
                         props.type == "signin" ?
                             <>
                                 <h6 className="text-zinc-400">Don&apos;t have an account?</h6>
-                                <Link href="/auth/signup"><p className="ml-2 text-sm hover:cursor-pointer">Register</p></Link>
+                                <Link href="/auth/signup"><p className="ml-2 text-sm hover:cursor-pointer relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:rounded-full after:bg-zinc=950 after:dark:bg-zinc-100 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center">Register</p></Link>
                             </>
                             :
                             <>
                                 <h6 className="text-zinc-400">Already have an account?</h6>
-                                <Link href="/auth/signin"><p className="ml-2 text-sm hover:cursor-pointer">Login</p></Link>
+                                <Link href="/auth/signin"><p className="ml-2 text-sm hover:cursor-pointer relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:rounded-full after:bg-zinc=950 after:dark:bg-zinc-100 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center">Login</p></Link>
                             </>
                     }
                 </div>

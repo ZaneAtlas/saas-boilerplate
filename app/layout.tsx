@@ -23,7 +23,7 @@ export default function RootLayout({
         <QueryProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="dark"
             enableSystem
           >
             <main className="max-w-6xl min-h-screen mx-auto py-10 space-y-10">
