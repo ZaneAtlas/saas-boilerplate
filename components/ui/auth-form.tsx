@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -16,16 +16,16 @@ import { useSearchParams } from "next/navigation";
 
 interface AuthFormProps {
 
-    type: string;
+    type: "signin" | "signup";
 
 }
 
-export function AuthForm(props: AuthFormProps) {
+function Form(props: AuthFormProps) {
 
     const params = useSearchParams()
     const next = params.get("next")
 
-    const handleLogin = ( provider: "google" | "github" ) => {
+    const handleLogin = (provider: "google" | "github") => {
 
         const supabase = supabaseBrowser()
         supabase.auth.signInWithOAuth({
@@ -36,7 +36,6 @@ export function AuthForm(props: AuthFormProps) {
         })
 
     }
-
     return (
         <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-zinc-50 dark:bg-zinc-900 drop-shadow-lg">
 
@@ -107,7 +106,7 @@ export function AuthForm(props: AuthFormProps) {
                         </span>
                         <BottomGradient />
                     </button>
-                    
+
                     <button
                         className=" relative group/btn flex space-x-2 items-center justify-center px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
                         onClick={() => handleLogin("google")}
@@ -135,6 +134,15 @@ export function AuthForm(props: AuthFormProps) {
                 </div>
             </form>
         </div>
+    )
+}
+
+export function AuthForm(props: AuthFormProps) {
+
+    return (
+        <Suspense>
+            <Form type={props.type} />
+        </Suspense>
     );
 }
 
