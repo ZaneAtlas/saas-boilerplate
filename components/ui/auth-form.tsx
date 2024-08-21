@@ -23,7 +23,7 @@ interface AuthFormProps {
 function Form(props: AuthFormProps) {
 
     const params = useSearchParams()
-    const next = params.get("next")
+    const next = params.get("next") || "/dashboard"
 
     const handleLogin = (provider: "google" | "github") => {
 

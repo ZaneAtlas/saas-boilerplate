@@ -68,7 +68,7 @@ export const Profile = () => {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push('/profile')}>
                   Profile
                 </DropdownMenuItem>
               </DropdownMenuGroup>
